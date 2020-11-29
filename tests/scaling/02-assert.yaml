@@ -15,7 +15,5 @@ metadata:
 spec:
   clusterName: cluster1
   size: 1
-  racks:
-    - name: rack1
 status:
   cassandraOperatorProgress: Ready

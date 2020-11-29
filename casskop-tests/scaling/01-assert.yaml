@@ -12,11 +12,6 @@ metadata:
   name: cassandra-e2e
 spec:
   nodesPerRacks: 2
-  topology:
-    dc:
-      - name: dc1
-        rack:
-          - name: rack1
 status:
   lastClusterAction: ScaleUp
   lastClusterActionStatus: Done
