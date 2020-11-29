@@ -23,7 +23,7 @@ spec:
   resources:
     requests: &requests
       memory: 512Mi
-      cpu: 600m
+      cpu: 1
     limits: *requests
   storageConfig:
     cassandraDataVolumeClaimSpec:
