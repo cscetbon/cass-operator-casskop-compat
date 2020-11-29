@@ -6,14 +6,6 @@ status:
   currentReplicas: 2
   replicas: 2
 ---
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: cassandra-e2e-dc1-rack2
-status:
-  currentReplicas: 2
-  replicas: 2
----
 apiVersion: db.orange.com/v1alpha1
 kind: CassandraCluster
 metadata:
@@ -25,7 +17,6 @@ spec:
       - name: dc1
         rack:
           - name: rack1
-          - name: rack2
 status:
   lastClusterAction: ScaleUp
   lastClusterActionStatus: Done

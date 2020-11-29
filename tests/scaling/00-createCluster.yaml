@@ -15,10 +15,9 @@ spec:
   serverVersion: 3.11.7
   managementApiAuth:
     insecure: {}
-  size: 2
+  size: 1
   racks:
     - name: rack1
-    - name: rack2
   # To run multiple cassie nodes on one k8s node
   allowMultipleNodesPerWorker: true
   resources:

@@ -7,15 +7,6 @@ status:
   currentReplicas: 1
   readyReplicas: 1
 ---
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: cluster1-dc1-rack2-sts
-  namespace: cass-operator
-status:
-  currentReplicas: 1
-  readyReplicas: 1
----
 apiVersion: cassandra.datastax.com/v1beta1
 kind: CassandraDatacenter
 metadata:
@@ -23,9 +14,8 @@ metadata:
   namespace: cass-operator
 spec:
   clusterName: cluster1
-  size: 2
+  size: 1
   racks:
     - name: rack1
-    - name: rack2
 status:
   cassandraOperatorProgress: Ready

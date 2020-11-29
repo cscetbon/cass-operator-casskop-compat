@@ -4,7 +4,4 @@ metadata:
   name: dc1
   namespace: cass-operator
 spec:
-  size: 2
-  racks:
-    - name: rack1
-    - name: rack2
+  size: 1
