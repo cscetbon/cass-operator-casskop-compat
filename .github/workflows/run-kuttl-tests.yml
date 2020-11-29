@@ -40,7 +40,7 @@ jobs:
         ./kuttl test --config kuttl-test-casskop.yaml
 
   kuttl-cass-operator:
-    needs: install-kuttl
+    needs: kuttl-casskop
     runs-on: ubuntu-latest
     steps:
     - name: Check out repository
