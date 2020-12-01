@@ -19,4 +19,4 @@ commands:
  #   ignoreFailure: true
  # - command: helm install --generate-name --set clusterWideInstall=false ./charts/cass-operator-chart
  #   namespaced: true
-timeout: 2400
+timeout: 1200

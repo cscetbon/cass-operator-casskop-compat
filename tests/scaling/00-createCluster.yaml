@@ -22,7 +22,7 @@ spec:
   allowMultipleNodesPerWorker: true
   resources:
     requests: &requests
-      memory: 512Mi
+      memory: 1Gi
       cpu: 400m
     limits: *requests
   storageConfig:
@@ -36,5 +36,5 @@ spec:
   config:
     jvm-options:
       initial_heap_size: 256M
-      max_heap_size: 256M
+      max_heap_size: 512M
       max_direct_memory: 96M
