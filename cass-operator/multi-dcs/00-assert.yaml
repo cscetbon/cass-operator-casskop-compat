@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: multidcs-multidc1-rack1-sts
+  namespace: cass-operator
+status:
+  currentReplicas: 1
+  readyReplicas: 1
+---
+apiVersion: cassandra.datastax.com/v1beta1
+kind: CassandraDatacenter
+metadata:
+  name: multidc1
+  namespace: cass-operator
+spec:
+  clusterName: multidcs
+  size: 1
+  racks:
+    - name: rack1
+status:
+  cassandraOperatorProgress: Ready
