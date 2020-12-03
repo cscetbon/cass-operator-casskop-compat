@@ -2,7 +2,7 @@ apiVersion: kuttl.dev/v1beta1
 kind: TestSuite
 # crdDir: ./operator/deploy/crds
 testDirs:
-  - tests
+  - .
 commands:
  - command: kubectl apply -f https://raw.githubusercontent.com/datastax/cass-operator/master/docs/user/cass-operator-manifests-v1.19.yaml
    ignoreFailure: true
@@ -20,3 +20,4 @@ commands:
  # - command: helm install --generate-name --set clusterWideInstall=false ./charts/cass-operator-chart
  #   namespaced: true
 timeout: 1200
+parallel: 1

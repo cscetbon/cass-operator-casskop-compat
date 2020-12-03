@@ -7,7 +7,7 @@
 apiVersion: cassandra.datastax.com/v1beta1
 kind: CassandraDatacenter
 metadata:
-  name: dc1
+  name: sidecars
   namespace: cass-operator
 spec:
   clusterName: cluster1
@@ -38,3 +38,36 @@ spec:
       initial_heap_size: 256M
       max_heap_size: 512M
       max_direct_memory: 96M
+      log_gc: true
+  podTemplateSpec:
+    spec:
+      initContainers: []
+      containers:
+        - args: ["tail", "-F", "/var/log/cassandra/system.log"]
+          image: ez123/alpine-tini
+          name: cassandra-log
+          resources: &sidecar_resources
+            limits:
+              cpu: 50m
+              memory: 50Mi
+            requests:
+              cpu: 10m
+              memory: 10Mi
+          volumeMounts:
+            - mountPath: /var/log/cassandra
+              name: server-logs
+        - args: ["tail", "-F", "/var/log/cassandra/gc.log"]
+          image: ez123/alpine-tini
+          name: gc-log
+          resources: *sidecar_resources
+          volumeMounts:
+            - mountPath: /var/log/cassandra
+              name: server-logs
+  storageConfig:
+    cassandraDataVolumeClaimSpec:
+      storageClassName: standard
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 5Gi
