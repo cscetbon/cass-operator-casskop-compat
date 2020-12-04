@@ -6,9 +6,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Disallow Concurrent Runs
-        uses: byu-oit/github-action-disallow-concurrent-runs@v1
-        with:
-          token: ${{ github.token }}
+      uses: byu-oit/github-action-disallow-concurrent-runs@v1
+      with:
+        token: ${{ github.token }}
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@master
       with:
