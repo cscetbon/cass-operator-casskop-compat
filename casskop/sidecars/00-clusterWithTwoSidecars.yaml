@@ -20,7 +20,7 @@ spec:
   backRestSidecar:
     resources:
       requests: &backRestRequests
-        memory: 64Mi
+        memory: 128Mi
         cpu: 100m
       limits: *backRestRequests
   resources:
@@ -43,33 +43,17 @@ spec:
         resources:
           requests:
             storage: 200Mi
-    - mountPath: "/var/log/cassandra"
-      name: "cassandra-logs"
-      pvcSpec:
-        accessModes:
-          - ReadWriteOnce
-        storageClassName: local-path
-        resources:
-          requests:
-            storage: 200Mi
   sidecarConfigs:
-    - args: ["tail", "-F", "/var/log/cassandra/system.log"]
+    - args: ["tail", "-F", "/var/log/cassandra/gc.log.0.current"]
       image: ez123/alpine-tini
       name: cassandra-log
-      resources: &sidecar_resources
+      resources:
         limits:
           cpu: 50m
           memory: 50Mi
         requests:
           cpu: 10m
           memory: 10Mi
-      volumeMounts:
-        - mountPath: /var/log/cassandra
-          name: cassandra-logs
-    - args: ["tail", "-F", "/var/log/cassandra/gc.log.0.current"]
-      image: ez123/alpine-tini
-      name: gc-log
-      resources: *sidecar_resources
       volumeMounts:
         - mountPath: /var/log/cassandra
           name: gc-logs

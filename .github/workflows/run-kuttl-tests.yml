@@ -5,6 +5,10 @@ jobs:
   scaleup-gke:
     runs-on: ubuntu-latest
     steps:
+    - name: Disallow Concurrent Runs
+        uses: byu-oit/github-action-disallow-concurrent-runs@v1
+        with:
+          token: ${{ github.token }}
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@master
       with:
@@ -50,13 +54,6 @@ jobs:
       with:
         path: kuttl
         key: ${{ runner.os }}-kuttl-0.7.2
-
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@master
-      with:
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
-        export_default_credentials: true
 
     - name: Run kuttl tests
       run: |

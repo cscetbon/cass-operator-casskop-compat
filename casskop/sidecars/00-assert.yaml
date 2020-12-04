@@ -1,25 +1,6 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: cassandra-logs-cassandra-e2e-dc1-rack1-0
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 200Mi
-  storageClassName: local-path
-  volumeMode: Filesystem
-status:
-  accessModes:
-  - ReadWriteOnce
-  capacity:
-    storage: 1Gi
-  phase: Bound
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
   name: gc-logs-cassandra-e2e-dc1-rack1-0
 spec:
   accessModes:
@@ -32,8 +13,6 @@ spec:
 status:
   accessModes:
   - ReadWriteOnce
-  capacity:
-    storage: 1Gi
   phase: Bound
 ---
 apiVersion: v1
@@ -51,8 +30,6 @@ spec:
 status:
   accessModes:
   - ReadWriteOnce
-  capacity:
-    storage: 1Gi
   phase: Bound
 ---
 apiVersion: apps/v1
@@ -68,10 +45,10 @@ spec:
       - args:
         - tail
         - -F
-        - /var/log/cassandra/system.log
+        - /var/log/cassandra/gc.log.0.current
         image: ez123/alpine-tini
         name: cassandra-log
-        resources: &sidecar_resources
+        resources:
           limits:
             cpu: 50m
             memory: 50Mi
@@ -80,98 +57,11 @@ spec:
             memory: 10Mi
         volumeMounts:
         - mountPath: /var/log/cassandra
-          name: cassandra-logs
-      - args:
-        - tail
-        - -F
-        - /var/log/cassandra/gc.log.0.current
-        image: ez123/alpine-tini
-        name: gc-log
-        resources: *sidecar_resources
-        volumeMounts:
-        - mountPath: /var/log/cassandra
           name: gc-logs
-      - command:
-        - cassandra
-        - -f
-        image: cassandra:3.11.7
-        name: cassandra
-        resources: 
-          requests: &requests
-            cpu: 200m
-            memory: 512Mi
-          limits: *requests
-        volumeMounts:
-        - mountPath: /etc/cassandra
-          name: bootstrap
-        - mountPath: /extra-lib
-          name: extra-lib
-        - mountPath: /opt/bin
-          name: tools
-        - mountPath: /var/lib/cassandra
-          name: data
-        - mountPath: /tmp
-          name: tmp
-        - mountPath: /var/lib/cassandra/log
-          name: gc-logs
-        - mountPath: /var/log/cassandra
-          name: cassandra-logs
-      - image: gcr.io/cassandra-operator/instaclustr-icarus:1.0.5
-        name: backrest-sidecar
-        ports:
-        - containerPort: 4567
-          name: http
-          protocol: TCP
-        resources:
-          requests: &backRestRequests
-            cpu: 100m
-            memory: 64Mi
-          limits: *backRestRequests
-        volumeMounts:
-        - mountPath: /etc/cassandra
-          name: bootstrap
-        - mountPath: /extra-lib
-          name: extra-lib
-        - mountPath: /var/lib/cassandra
-          name: data
-        - mountPath: /tmp
-          name: tmp
-      initContainers:
-      - command:
-        - sh
-        - -c
-        - cp -vr /etc/cassandra/* /bootstrap
-        image: cassandra:3.11.7
-        name: init-config
-        resources: &init_resources
-          requests: &init_requests
-            cpu: 500m
-            memory: 512Mi
-          limits: *init_requests
-        volumeMounts:
-        - mountPath: /bootstrap
-          name: bootstrap
-      - image: orangeopensource/cassandra-bootstrap:0.1.7
-        name: bootstrap
-        resources: *init_resources
-        volumeMounts:
-        - mountPath: /etc/cassandra
-          name: bootstrap
-        - mountPath: /extra-lib
-          name: extra-lib
-        - mountPath: /opt/bin
-          name: tools
-      volumes:
-      - emptyDir: {}
-        name: bootstrap
-      - emptyDir: {}
-        name: extra-lib
-      - emptyDir: {}
-        name: tools
-      - emptyDir: {}
-        name: tmp
+      - name: cassandra
+      - name: backrest-sidecar
 status:
-  currentReplicas: 1
+  readyReplicas: 1
   replicas: 1
 ---
 apiVersion: db.orange.com/v1alpha1
@@ -182,3 +72,4 @@ status:
   lastClusterAction: Initializing
   lastClusterActionStatus: Done
   phase: Running
+
