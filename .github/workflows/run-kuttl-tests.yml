@@ -2,62 +2,108 @@ name: Compatibility casskop/cass-operator
 on: push
 
 jobs:
-  install-kuttl:
+  scaleup-gke:
     runs-on: ubuntu-latest
     steps:
-    - name: Cache Kuttl
-      id: cache-kuttl
-      uses: actions/cache@v2
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@master
       with:
-        path: kuttl
-        key: ${{ runner.os }}-kuttl-0.7.2
-
-    - name: download-kuttl
-      if: steps.cache-kuttl.outputs.cache-hit != 'true'
-      uses: wei/wget@v1
-      with:
-        args: -c -O kuttl https://github.com/kudobuilder/kuttl/releases/download/v0.7.2/kubectl-kuttl_0.7.2_linux_i386
-
-  kuttl-casskop:
-    needs: install-kuttl
-    runs-on: ubuntu-latest
-    steps:
-    - name: Check out repository
-      uses: actions/checkout@v2
-
-    - uses: rinx/setup-k3d@v0.0.3
-
-    - name: Cache Kuttl
-      id: cache-kuttl
-      uses: actions/cache@v2
-      with:
-        path: kuttl
-        key: ${{ runner.os }}-kuttl-0.7.2
-
-    - name: Run kuttl tests
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
+    - name: scale up
+      env:
+        CLUSTER_NAME: casskop-dev
+        NUM_NODES: 2
       run: |
-        chmod u+x kuttl
-        cd casskop
-        ../kuttl test
+        gcloud container clusters resize $CLUSTER_NAME --quiet --num-nodes=$NUM_NODES -z europe-west1-b
 
-  kuttl-cass-operator:
-    needs: kuttl-casskop
+  scaledown-gke:
     runs-on: ubuntu-latest
+    needs: scaleup-gke
     steps:
-    - name: Check out repository
-      uses: actions/checkout@v2
-
-    - uses: rinx/setup-k3d@v0.0.3
-
-    - name: Cache Kuttl
-      id: cache-kuttl
-      uses: actions/cache@v2
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@master
       with:
-        path: kuttl
-        key: ${{ runner.os }}-kuttl-0.7.2
-
-    - name: Run kuttl tests
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
+    - name: scale up
+      env:
+        CLUSTER_NAME: casskop-dev
       run: |
-        chmod u+x kuttl
-        cd cass-operator
-        ../kuttl test
+        gcloud container clusters resize $CLUSTER_NAME --quiet --num-nodes=0 -z europe-west1-b
+
+  # install-kuttl:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Cache Kuttl
+  #     id: cache-kuttl
+  #     uses: actions/cache@v2
+  #     with:
+  #       path: kuttl
+  #       key: ${{ runner.os }}-kuttl-0.7.2
+
+  #   - name: download-kuttl
+  #     if: steps.cache-kuttl.outputs.cache-hit != 'true'
+  #     uses: wei/wget@v1
+  #     with:
+  #       args: -c -O kuttl https://github.com/kudobuilder/kuttl/releases/download/v0.7.2/kubectl-kuttl_0.7.2_linux_i386
+
+  # kuttl-casskop:
+  #   needs: install-kuttl
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Check out repository
+  #     uses: actions/checkout@v2
+
+  #   - uses: rinx/setup-k3d@v0.0.3
+
+  #   - name: Cache Kuttl
+  #     id: cache-kuttl
+  #     uses: actions/cache@v2
+  #     with:
+  #       path: kuttl
+  #       key: ${{ runner.os }}-kuttl-0.7.2
+
+  #   - name: Set up Cloud SDK
+  #     uses: google-github-actions/setup-gcloud@master
+  #     with:
+  #       project_id: ${{ secrets.GCP_PROJECT_ID }}
+  #       service_account_key: ${{ secrets.GCP_SA_KEY }}
+  #       export_default_credentials: true
+
+  #   - name: Run kuttl tests
+  #     run: |
+  #       chmod u+x kuttl
+  #       cd casskop
+  #       ../kuttl test
+
+  # kuttl-cass-operator:
+  #   needs: kuttl-casskop
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Check out repository
+  #     uses: actions/checkout@v2
+
+  #   - uses: rinx/setup-k3d@v0.0.3
+
+  #   - name: Cache Kuttl
+  #     id: cache-kuttl
+  #     uses: actions/cache@v2
+  #     with:
+  #       path: kuttl
+  #       key: ${{ runner.os }}-kuttl-0.7.2
+
+  #   - name: Set up Cloud SDK
+  #     uses: google-github-actions/setup-gcloud@master
+  #     with:
+  #       project_id: ${{ secrets.GCP_PROJECT_ID }}
+  #       service_account_key: ${{ secrets.GCP_SA_KEY }}
+  #       export_default_credentials: true
+
+  #   - name: Run kuttl tests
+  #     run: |
+  #       chmod u+x kuttl
+  #       cd cass-operator
+  #       ../kuttl test
