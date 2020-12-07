@@ -16,11 +16,12 @@ jobs:
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
     - name: scale up
-      env:
+      env: &gke_env
         CLUSTER_NAME: casskop-compat-cscetbon
+        ZONE: europe-west1-b
         NUM_NODES: 2
       run: |
-        gcloud container clusters resize $CLUSTER_NAME --quiet --num-nodes=$NUM_NODES -z europe-west1-b
+        gcloud container clusters resize $CLUSTER_NAME --quiet --num-nodes=$NUM_NODES -z $ZONE
 
   install-kuttl:
     runs-on: ubuntu-latest
@@ -54,11 +55,10 @@ jobs:
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
 
-    # - name: Set kubeconfig
-    #   env:
-    #     CLUSTER_NAME: casskop-compat-cscetbon
-    #   run: |
-    #     gcloud container clusters get-credentials $CLUSTER_NAME --zone europe-west1-b --project ${{ secrets.GCP_PROJECT_ID }}
+    - name: Set kubeconfig
+      env: *gke_env
+      run: |
+        gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE --project ${{ secrets.GCP_PROJECT_ID }}
 
     - name: Cache Kuttl
       id: cache-kuttl
@@ -89,11 +89,10 @@ jobs:
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
 
-    # - name: Set kubeconfig
-    #   env:
-    #     CLUSTER_NAME: casskop-compat-cscetbon
-    #   run: |
-    #     gcloud container clusters get-credentials $CLUSTER_NAME --zone europe-west1-b --project ${{ secrets.GCP_PROJECT_ID }}
+    - name: Set kubeconfig
+      env: *gke_env
+      run: |
+        gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE --project ${{ secrets.GCP_PROJECT_ID }}
 
     - name: Cache Kuttl
       id: cache-kuttl
@@ -123,7 +122,7 @@ jobs:
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
     - name: scale up
-      env:
+      env: *gke_env
         CLUSTER_NAME: casskop-compat-cscetbon
       run: |
-        gcloud container clusters resize $CLUSTER_NAME --quiet --num-nodes=0 -z europe-west1-b
+        gcloud container clusters resize $CLUSTER_NAME --quiet -z $ZONE --num-nodes=0
