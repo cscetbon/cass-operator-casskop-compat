@@ -123,6 +123,5 @@ jobs:
         export_default_credentials: true
     - name: scale up
       env: *gke_env
-        CLUSTER_NAME: casskop-compat-cscetbon
       run: |
         gcloud container clusters resize $CLUSTER_NAME --quiet -z $ZONE --num-nodes=0
