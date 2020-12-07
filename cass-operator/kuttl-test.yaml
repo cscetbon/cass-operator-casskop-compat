@@ -4,6 +4,8 @@ kind: TestSuite
 testDirs:
   - .
 commands:
+ - command: kubectl delete -f https://raw.githubusercontent.com/datastax/cass-operator/master/docs/user/cass-operator-manifests-v1.19.yaml
+   ignoreFailure: true
  - command: kubectl apply -f https://raw.githubusercontent.com/datastax/cass-operator/master/docs/user/cass-operator-manifests-v1.19.yaml
    ignoreFailure: true
  # - command: helm repo add datastax https://datastax.github.io/charts --force-update

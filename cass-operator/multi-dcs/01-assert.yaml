@@ -26,8 +26,9 @@ spec:
   size: 1
   racks:
     - name: rack1
-status:
-  cassandraOperatorProgress: Ready
+# Status can't be tested until https://github.com/datastax/cass-operator/issues/329 is fixed
+# status:
+#   cassandraOperatorProgress: Ready
 ---
 apiVersion: cassandra.datastax.com/v1beta1
 kind: CassandraDatacenter
@@ -39,5 +40,5 @@ spec:
   size: 1
   racks:
     - name: rack1
-status:
-  cassandraOperatorProgress: Ready
+# status:
+#   cassandraOperatorProgress: Ready
