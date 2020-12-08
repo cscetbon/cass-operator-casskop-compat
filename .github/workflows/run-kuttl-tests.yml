@@ -4,6 +4,7 @@ on: push
 jobs:
   scaleup-gke:
     runs-on: ubuntu-latest
+    timeout-minutes: 2
     steps:
     - name: Disallow Concurrent Runs
       uses: byu-oit/github-action-disallow-concurrent-runs@v1
@@ -47,7 +48,6 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v2
 
-    # - uses: rinx/setup-k3d@v0.0.3
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@master
       with:
@@ -83,7 +83,6 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v2
 
-    # - uses: rinx/setup-k3d@v0.0.3
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@master
       with:
@@ -109,12 +108,11 @@ jobs:
       run: |
         chmod u+x kuttl
         cd cass-operator
-        # ls
-        # cp ../kubeconfig .
         ../kuttl test
 
   scaledown-gke:
     runs-on: ubuntu-latest
+    timeout-minutes: 2
     needs:
       - kuttl-casskop
       - kuttl-cass-operator
