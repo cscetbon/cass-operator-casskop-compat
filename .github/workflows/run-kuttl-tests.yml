@@ -1,5 +1,8 @@
-name: Compatibility casskop/cass-operator
 on: push
+name: Compatibility casskop/cass-operator
+
+kuttl:
+  version: 0.8.0
 
 jobs:
   scaleup-gke:
@@ -33,13 +36,13 @@ jobs:
       uses: actions/cache@v2
       with:
         path: kuttl
-        key: ${{ runner.os }}-kuttl-0.7.2
+        key: ${{ runner.os }}-kuttl-${{ kuttl.version }}
 
     - name: download-kuttl
       if: steps.cache-kuttl.outputs.cache-hit != 'true'
       uses: wei/wget@v1
       with:
-        args: -c -O kuttl https://github.com/kudobuilder/kuttl/releases/download/v0.7.2/kubectl-kuttl_0.7.2_linux_i386
+        args: -c -O kuttl https://github.com/kudobuilder/kuttl/releases/download/v${{ kuttl.version }}/kubectl-kuttl_${{ kuttl.version }}_linux_i386
 
   kuttl-casskop:
     needs: install-kuttl
@@ -67,7 +70,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: kuttl
-        key: ${{ runner.os }}-kuttl-0.7.2
+        key: ${{ runner.os }}-kuttl-${{ kuttl.version }}
 
     - name: Run kuttl tests
       run: |
@@ -101,7 +104,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: kuttl
-        key: ${{ runner.os }}-kuttl-0.7.2
+        key: ${{ runner.os }}-kuttl-${{ kuttl.version }}
 
     - name: Run kuttl tests
       run: |
