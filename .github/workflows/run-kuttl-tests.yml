@@ -73,7 +73,6 @@ jobs:
       run: |
         chmod u+x kuttl
         cd casskop
-        # cp ../kubeconfig .
         ../kuttl test
 
   kuttl-cass-operator:
