@@ -34,8 +34,8 @@ spec:
         rack:
           - name: rack1
   storageConfigs:
-    - mountPath: "/var/lib/cassandra/log"
-      name: "gc-logs"
+    - mountPath: /var/lib/cassandra/log
+      name: gc-logs
       pvcSpec:
         accessModes:
           - ReadWriteOnce
