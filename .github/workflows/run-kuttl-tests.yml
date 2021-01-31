@@ -76,6 +76,28 @@ jobs:
       run: |
         chmod u+x kuttl
         cd casskop
+        # Apply backup S3 secret
+        cat <<EOF >> backup-restore/00-createCluster.yaml
+        ---
+        apiVersion: v1
+        kind: Secret
+        metadata:
+          name: aws-backup-secrets
+        type: Opaque
+        stringData:
+          awsaccesskeyid: ${AWS_ACCESS_KEY_ID}
+          awssecretaccesskey: ${AWS_SECRET_ACCESS_KEY}
+          awsregion: us-west-2
+        EOF
+
+        cat <<EOF >> backup-restore/00-assert.yaml
+        ---
+        apiVersion: v1
+        kind: Secret
+        metadata:
+          name: aws-backup-secrets
+        EOF
+
         ../kuttl test
 
   kuttl-cass-operator:
