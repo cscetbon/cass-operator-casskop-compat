@@ -6,5 +6,5 @@ spec:
   cassandraBackup: backup-compat-tests
   cassandraCluster: cassandra-e2e
   entities: k1.standard1
-  # rename:
-  #   k1.standard1: k1.standard2
+  rename:
+    k1.standard1: k1.standard2

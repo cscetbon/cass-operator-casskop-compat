@@ -3,9 +3,9 @@ apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 commands:
   # Fill Cassandra tables
-  - command: kubectl exec -ti cassandra-e2e-dc1-rack1-0 -- /opt/cassandra/tools/bin/cassandra-stress write n=2000 cl=one -rate threads=1 -mode native cql3 user=cassandra password=cassandra -col names=c1 -schema 'Keyspace=k1 replication(strategy=NetworkTopologyStrategy, dc1=2)'
-  # Fill Cassandra tables
-  - command: "kubectl exec -ti cassandra-e2e-dc1-rack1-0 -- cqlsh -k k1 \"CREATE TABLE standard2(key blob PRIMARY KEY, c1 blob) WITH compression = {'enabled': 'false'};\""
+  - script: kubectl exec -n $NAMESPACE cassandra-e2e-dc1-rack1-0 -- /opt/cassandra/tools/bin/cassandra-stress write n=2000 cl=one -rate threads=1 -mode native cql3 user=cassandra password=cassandra -col names=c1 -schema 'compression=LZ4Compressor Keyspace=k1 replication(strategy=NetworkTopologyStrategy, dc1=2)'
+  # Create table standard2 similar to table standard1
+  - script: kubectl exec -n $NAMESPACE cassandra-e2e-dc1-rack1-0 -- cqlsh -k k1 -e "CREATE TABLE standard2(key blob PRIMARY KEY, c1 blob);"
 ---
 apiVersion: db.orange.com/v1alpha1
 kind: CassandraBackup
@@ -14,7 +14,7 @@ metadata:
 spec:
   cassandraCluster: cassandra-e2e
   datacenter: dc1
-  storageLocation: s3://casskop-backup-restore-test
+  storageLocation: s3://cscetbon-lab
   snapshotTag: CassOpCassKopCompatTest
   secret: aws-backup-secrets
   entities: k1.standard1
