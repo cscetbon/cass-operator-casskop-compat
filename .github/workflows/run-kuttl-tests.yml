@@ -85,8 +85,8 @@ jobs:
           name: aws-backup-secrets
         type: Opaque
         stringData:
-          awsaccesskeyid: ${AWS_ACCESS_KEY_ID}
-          awssecretaccesskey: ${AWS_SECRET_ACCESS_KEY}
+          awsaccesskeyid: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          awssecretaccesskey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           awsregion: us-west-2
         EOF
 
