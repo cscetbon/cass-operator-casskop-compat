@@ -98,7 +98,10 @@ jobs:
           name: aws-backup-secrets
         EOF
 
-        ../kuttl test
+        cat backup-restore/00-createCluster.yaml
+        cat backup-restore/00-assert.yaml
+
+        ../kuttl test --test backup-restore
 
   kuttl-cass-operator:
     needs: install-kuttl
