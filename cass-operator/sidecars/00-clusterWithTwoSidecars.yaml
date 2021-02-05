@@ -12,7 +12,7 @@ metadata:
 spec:
   clusterName: cluster1
   serverType: cassandra
-  serverVersion: 3.11.7
+  serverVersion: 3.11.9
   size: 1
   racks:
     - name: rack1
