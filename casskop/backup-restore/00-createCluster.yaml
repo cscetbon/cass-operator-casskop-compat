@@ -11,6 +11,7 @@ metadata:
 spec:
   nodesPerRacks: 2
   cassandraImage: cassandra:3.11.9
+  bootstrapImage: orangeopensource/cassandra-bootstrap:0.1.8
   dataCapacity: "256Mi"
   hardAntiAffinity: false
   deletePVC: true
@@ -18,17 +19,13 @@ spec:
   autoUpdateSeedList: false
   dataStorageClass: local-path
   backRestSidecar:
-    image: gcr.io/cassandra-operator/instaclustr-icarus:1.0.8
-    resources:
-      requests: &backRestRequests
+    image: gcr.io/cassandra-operator/instaclustr-icarus:1.0.9
+    resources: &resources
+      requests: &requests
         memory: 512Mi
-        cpu: 100m
-      limits: *backRestRequests
-  resources:
-    requests: &requests
-      memory: 512Mi
-      cpu: 200m
-    limits: *requests
+        cpu: 200m
+      limits: *requests
+  resources: *resources
   topology:
     dc:
       - name: dc1

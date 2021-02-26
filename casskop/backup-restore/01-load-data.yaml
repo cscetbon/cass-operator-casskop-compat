@@ -2,8 +2,7 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 commands:
-  # Fill Cassandra tables
+  # Create and fill k1.standard1
   - script: kubectl exec -n $NAMESPACE cassandra-e2e-dc1-rack1-0 -- /opt/cassandra/tools/bin/cassandra-stress write n=2000 cl=one -rate threads=1 -mode native cql3 user=cassandra password=cassandra -col names=c1 -schema 'compression=LZ4Compressor Keyspace=k1 replication(strategy=NetworkTopologyStrategy, dc1=2)'
-  # Create table standard2 similar to table standard1
-  - script: kubectl exec -n $NAMESPACE cassandra-e2e-dc1-rack1-0 -- cqlsh -k k1 -e "CREATE TABLE standard2(key blob PRIMARY KEY, c1 blob) WITH COMPACT STORAGE;"
-  - script: kubectl exec -n $NAMESPACE cassandra-e2e-dc1-rack1-0 -- nodetool flush
+  # Create k2.standard1
+  - script: kubectl exec -n $NAMESPACE cassandra-e2e-dc1-rack1-0 -- /opt/cassandra/tools/bin/cassandra-stress write n=0 cl=one -rate threads=1 -mode native cql3 user=cassandra password=cassandra -col names=c1 -schema 'compression=LZ4Compressor Keyspace=k2 replication(strategy=NetworkTopologyStrategy, dc1=2)'
