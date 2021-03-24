@@ -8,11 +8,10 @@ apiVersion: cassandra.datastax.com/v1beta1
 kind: CassandraDatacenter
 metadata:
   name: scaling
-  namespace: cass-operator
 spec:
   clusterName: cluster1
   serverType: cassandra
-  serverVersion: 3.11.9
+  serverVersion: 3.11.7
   size: 1
   racks:
     - name: rack1

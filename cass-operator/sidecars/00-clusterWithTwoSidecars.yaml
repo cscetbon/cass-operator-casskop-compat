@@ -8,11 +8,10 @@ apiVersion: cassandra.datastax.com/v1beta1
 kind: CassandraDatacenter
 metadata:
   name: sidecars
-  namespace: cass-operator
 spec:
   clusterName: cluster1
   serverType: cassandra
-  serverVersion: 3.11.9
+  serverVersion: 3.11.7
   size: 1
   racks:
     - name: rack1
@@ -63,7 +62,7 @@ spec:
               name: server-logs
   storageConfig:
     cassandraDataVolumeClaimSpec:
-      storageClassName: standard
+      storageClassName: local-path
       accessModes:
         - ReadWriteOnce
       resources:

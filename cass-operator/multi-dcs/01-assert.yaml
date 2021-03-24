@@ -1,8 +1,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: multidcs-multidc1-rack1-sts
-  namespace: cass-operator
+  name: multidcs-dc1-rack1-sts
 status:
   currentReplicas: 1
   readyReplicas: 1
@@ -10,8 +9,7 @@ status:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: multidcs-multidc2-rack1-sts
-  namespace: cass-operator
+  name: multidcs-dc2-rack1-sts
 status:
   currentReplicas: 1
   readyReplicas: 1
@@ -19,8 +17,7 @@ status:
 apiVersion: cassandra.datastax.com/v1beta1
 kind: CassandraDatacenter
 metadata:
-  name: multidc1
-  namespace: cass-operator
+  name: dc1
 spec:
   clusterName: multidcs
   size: 1
@@ -33,8 +30,7 @@ spec:
 apiVersion: cassandra.datastax.com/v1beta1
 kind: CassandraDatacenter
 metadata:
-  name: multidc2
-  namespace: cass-operator
+  name: dc2
 spec:
   clusterName: multidcs
   size: 1

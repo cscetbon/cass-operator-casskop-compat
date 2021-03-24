@@ -4,9 +4,9 @@ kind: TestSuite
 testDirs:
   - .
 commands:
- - command: kubectl delete --wait=true -f https://raw.githubusercontent.com/datastax/cass-operator/master/docs/user/cass-operator-manifests-v1.19.yaml
-   ignoreFailure: true
  - command: helm repo add datastax https://datastax.github.io/charts --force-update
+   ignoreFailure: true
+ - command: helm delete cass-operator
    ignoreFailure: true
  - command: helm install cass-operator datastax/cass-operator --set defaultImage=cscetbon/cass-operator:master,clusterWideInstall=true
    ignoreFailure: true

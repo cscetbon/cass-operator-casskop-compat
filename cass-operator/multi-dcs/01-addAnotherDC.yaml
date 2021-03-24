@@ -7,12 +7,11 @@
 apiVersion: cassandra.datastax.com/v1beta1
 kind: CassandraDatacenter
 metadata:
-  name: multidc2
-  namespace: cass-operator
+  name: dc2
 spec:
   clusterName: multidcs
   serverType: cassandra
-  serverVersion: 3.11.9
+  serverVersion: 3.11.7
   size: 1
   racks:
     - name: rack1

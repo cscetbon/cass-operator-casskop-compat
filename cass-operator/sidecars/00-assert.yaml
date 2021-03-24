@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: cluster1-sidecars-rack1-sts
-  namespace: cass-operator
 status:
   currentReplicas: 1
   readyReplicas: 1
@@ -11,7 +10,6 @@ apiVersion: cassandra.datastax.com/v1beta1
 kind: CassandraDatacenter
 metadata:
   name: sidecars
-  namespace: cass-operator
 spec:
   clusterName: cluster1
   size: 1

@@ -3,4 +3,3 @@ kind: TestStep
 delete:
 - apiVersion: cassandra.datastax.com/v1beta1
   kind: CassandraDatacenter
-  namespace: cass-operator
