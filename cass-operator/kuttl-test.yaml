@@ -6,20 +6,9 @@ testDirs:
 commands:
  - command: kubectl delete --wait=true -f https://raw.githubusercontent.com/datastax/cass-operator/master/docs/user/cass-operator-manifests-v1.19.yaml
    ignoreFailure: true
- - command: kubectl apply -f https://raw.githubusercontent.com/datastax/cass-operator/master/docs/user/cass-operator-manifests-v1.19.yaml
+ - command: helm repo add datastax https://datastax.github.io/charts --force-update
    ignoreFailure: true
- # - command: helm repo add datastax https://datastax.github.io/charts --force-update
- #   ignoreFailure: true
- # - command: kubectl create namespace cass-operator
- #   ignoreFailure: true
- # - command: kubectl delete namespace kuttl-tests
- #   ignoreFailure: true
- # - command: kubectl create namespace kuttl-tests
- #   ignoreFailure: true
- # - command: helm install -n kuttl-tests --set clusterWideInstall=false casskop datastax/cass-operator
- # - command: helm install -n cass-operator cass-operator datastax/cass-operator
- #   ignoreFailure: true
- # - command: helm install --generate-name --set clusterWideInstall=false ./charts/cass-operator-chart
- #   namespaced: true
+ - command: helm install cass-operator datastax/cass-operator --set defaultImage=datastax/cass-operator:master,clusterWideInstall=true
+   ignoreFailure: true
 timeout: 600
 parallel: 1

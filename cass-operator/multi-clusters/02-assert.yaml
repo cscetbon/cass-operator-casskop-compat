@@ -1,0 +1,10 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestAssert
+commands:
+- script: |
+    output=$(kubectl exec -n n1 multidcs-multidc1-rack1-sts-0 -- nodetool status)
+    [ $(echo "$output"|grep -c ^UN) -eq 2 ]
+- script: |
+    output=$(kubectl exec -n n1 multidcs-multidc1-rack1-sts-0 -- nodetool status)
+    [ $(echo "$output"|grep -c ^Datacenter) -eq 2 ]
+timeout: 600
