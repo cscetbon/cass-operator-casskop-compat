@@ -12,7 +12,7 @@ metadata:
 apiVersion: cassandra.datastax.com/v1beta1
 kind: CassandraDatacenter
 metadata:
-  name: multidc1
+  name: dc1
   namespace: n1
 spec:
   clusterName: multidcs

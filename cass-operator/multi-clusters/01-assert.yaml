@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: multidcs-multidc1-rack1-sts
+  name: multidcs-dc1-rack1-sts
   namespace: n1
 status:
   currentReplicas: 1
@@ -10,7 +10,7 @@ status:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: multidcs-multidc2-rack1-sts
+  name: multidcs-dc2-rack1-sts
   namespace: n2
 status:
   currentReplicas: 1
@@ -19,7 +19,7 @@ status:
 apiVersion: cassandra.datastax.com/v1beta1
 kind: CassandraDatacenter
 metadata:
-  name: multidc1
+  name: dc1
   namespace: n1
 spec:
   clusterName: multidcs
@@ -33,7 +33,7 @@ spec:
 apiVersion: cassandra.datastax.com/v1beta1
 kind: CassandraDatacenter
 metadata:
-  name: multidc2
+  name: dc2
   namespace: n2
 spec:
   clusterName: multidcs

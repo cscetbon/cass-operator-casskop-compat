@@ -12,7 +12,7 @@ metadata:
 apiVersion: cassandra.datastax.com/v1beta1
 kind: CassandraDatacenter
 metadata:
-  name: multidc2
+  name: dc2
   namespace: n2
 spec:
   clusterName: multidcs
@@ -22,7 +22,7 @@ spec:
   racks:
     - name: rack1
   additionalSeeds:
-    - multidcs-multidc1-service.n1
+    - multidcs-dc1-service.n1
   # To run multiple cassie nodes on one k8s node
   allowMultipleNodesPerWorker: true
   resources:
