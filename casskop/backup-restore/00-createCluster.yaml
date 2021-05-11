@@ -19,12 +19,11 @@ spec:
   autoUpdateSeedList: false
   dataStorageClass: local-path
   backRestSidecar:
-    image: gcr.io/cassandra-operator/instaclustr-icarus:1.0.9
+    image: gcr.io/cassandra-operator/instaclustr-icarus:1.1.0
     resources: &resources
-      requests: &requests
+      limits:
         memory: 512Mi
         cpu: 200m
-      limits: *requests
   resources: *resources
   topology:
     dc:
