@@ -1,7 +1,7 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 commands:
-  - command: helm install casskop orange-incubator/cassandra-operator
+  - command: helm install casskop orange-incubator/cassandra-operator --set image.tag=cassie4
     namespaced: true
 ---
 apiVersion: db.orange.com/v1alpha1
@@ -19,15 +19,13 @@ spec:
   dataStorageClass: local-path
   backRestSidecar:
     resources:
-      requests: &backRestRequests
+      limits:
         memory: 128Mi
         cpu: 100m
-      limits: *backRestRequests
   resources:
-    requests: &requests
+    limits:
       memory: 512Mi
       cpu: 200m
-    limits: *requests
   topology:
     dc:
       - name: dc1

@@ -1,7 +1,7 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 commands:
-  - command: helm install casskop orange-incubator/cassandra-operator --set image.tag=1.0.2-restore-rename
+  - command: helm install casskop orange-incubator/cassandra-operator --set image.tag=cassie4
     namespaced: true
 ---
 apiVersion: db.orange.com/v1alpha1
