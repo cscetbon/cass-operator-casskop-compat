@@ -72,6 +72,18 @@ jobs:
         path: kuttl
         key: ${{ runner.os }}-kuttl-${{ env.kuttl-version }}
 
+    - name: Install kubemcsa
+      run: |
+        KUBEMCSA=/usr/bin/kubemcsa
+        curl -Lo $KUBEMCSA https://github.com/admiraltyio/multicluster-service-account/releases/download/v0.6.1/kubemcsa-linux-amd64
+        chmod +x $KUBEMCSA
+
+    - name: Install jq
+      run: |
+        JQ=/usr/bin/jq
+        curl -Lo $JQ https://stedolan.github.io/jq/download/linux64/jq
+        chmod +x $JQ
+
     - name: Run kuttl tests
       run: |
         chmod u+x kuttl
@@ -97,9 +109,6 @@ jobs:
         metadata:
           name: aws-backup-secrets
         EOF
-
-        cat backup-restore/00-createCluster.yaml
-        cat backup-restore/00-assert.yaml
 
         ../kuttl test --test backup-restore
 
