@@ -11,7 +11,6 @@ metadata:
 spec:
   nodesPerRacks: 2
   cassandraImage: cassandra:3.11.9
-  bootstrapImage: orangeopensource/cassandra-bootstrap:0.1.8
   dataCapacity: "256Mi"
   hardAntiAffinity: false
   deletePVC: true
