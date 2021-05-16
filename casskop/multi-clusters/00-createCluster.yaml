@@ -1,0 +1,94 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+  - script: kubectl create namespace cluster1
+  - command: helm install casskop -n cluster1 orange-incubator/cassandra-operator --set debug.enabled=true --set image.tag=cassie4
+    namespaced: false
+  - script: kubectl create namespace cluster2
+  - command: helm install casskop -n cluster2 orange-incubator/cassandra-operator --set debug.enabled=true --set image.tag=cassie4
+    namespaced: true
+  - script: |
+      kubemcsa export cassandra-operator --as k8s-cluster2 -n cluster1|kubectl apply -n cluster1 -f -
+      secret=$(kubectl get secrets -n cluster1 k8s-cluster2 -o json|jq -r '.data.config'|base64 -d|sed -e 's#\(server:\) .*#\1  https://kubernetes.default.svc #'|base64)
+      kubectl get secrets -n cluster1 k8s-cluster2 -o json|jq ".data.config=\"$secret\""|kubectl apply -f -
+  - command: helm install multi-casskop orange-incubator/multi-casskop --set image.tag=cassie4 -n cluster1 --set k8s.local=$CONTEXT --set k8s.remote={k8s-cluster2}
+    namespaced: false
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: inter-ns
+rules:
+- apiGroups:
+  - db.orange.com
+  resources:
+  - cassandraclusters
+  verbs:
+  - "*"
+- apiGroups:
+    - db.orange.com
+  resources:
+    - cassandraclusters/status
+  verbs:
+  - "*"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: inter-ns-cl1
+  namespace: cluster2
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: inter-ns
+subjects:
+- kind: ServiceAccount
+  name: cassandra-operator
+  namespace: cluster1
+---
+apiVersion: db.orange.com/v1alpha1
+kind: MultiCasskop
+metadata:
+  name: multi-casskop-demo
+spec:
+  deleteCassandraCluster: true
+  base:
+    apiVersion: db.orange.com/v1alpha1
+    kind: CassandraCluster
+    metadata:
+      name: cassandra-e2e
+      labels:
+        cluster: casskop
+    spec:
+      nodesPerRacks: 1
+      cassandraImage: cassandra:3.11.9
+      dataCapacity: "1Gi"
+      hardAntiAffinity: false
+      deletePVC: true
+      autoPilot: true
+      autoUpdateSeedList: false
+      resources:         
+        limits:
+          cpu: 100m
+          memory: 512Mi
+    status:
+      seedlist:
+        - cassandra-e2e-dc1-rack1-0.cassandra-e2e.cluster1
+  override:
+    k3d-cassie4:
+      metadata:
+        namespace: cluster1
+      spec:
+        topology:
+          dc:
+            - name: dc1
+              rack: &rack
+                - name: rack1
+    k8s-cluster2:
+      metadata:
+        namespace: cluster2
+      spec:
+        topology:
+          dc:
+            - name: dc2
+              rack: *rack
