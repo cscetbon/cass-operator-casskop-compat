@@ -110,7 +110,8 @@ jobs:
           name: aws-backup-secrets
         EOF
 
-        ../kuttl test --test backup-restore
+        # ../kuttl test --test backup-restore
+        ../kuttl test
 
   kuttl-cass-operator:
     needs: install-kuttl
