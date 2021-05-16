@@ -74,15 +74,15 @@ jobs:
 
     - name: Install kubemcsa
       run: |
-        KUBEMCSA=/usr/local/bin/kubemcsa
-        curl -Lo $KUBEMCSA https://github.com/admiraltyio/multicluster-service-account/releases/download/v0.6.1/kubemcsa-linux-amd64
-        chmod +x $KUBEMCSA
+        KUBEMCSA=/usr/bin/kubemcsa
+        sudo curl -Lo $KUBEMCSA https://github.com/admiraltyio/multicluster-service-account/releases/download/v0.6.1/kubemcsa-linux-amd64
+        sudo chmod +x $KUBEMCSA
 
     - name: Install jq
       run: |
-        JQ=/usr/local/bin/jq
-        curl -Lo $JQ https://stedolan.github.io/jq/download/linux64/jq
-        chmod +x $JQ
+        JQ=/usr/bin/jq
+        sudo curl -Lo $JQ https://stedolan.github.io/jq/download/linux64/jq
+        sudo chmod +x $JQ
 
     - name: Run kuttl tests
       run: |
