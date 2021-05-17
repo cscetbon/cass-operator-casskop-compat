@@ -1,0 +1,13 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+  - script: |
+      kubectl delete multicasskops.db.orange.com cassandra-e2e -n cluster1
+      helm del casskop -n cluster1
+      helm del casskop -n cluster2
+      helm del multi-casskop -n cluster1
+      helm del casskop -n cluster1
+      helm del casskop -n cluster2
+      helm del multi-casskop -n cluster1
+      kubectl delete namespaces cluster1
+      kubectl delete namespaces cluster2
