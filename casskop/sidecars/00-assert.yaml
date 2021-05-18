@@ -52,9 +52,6 @@ spec:
           limits:
             cpu: 50m
             memory: 50Mi
-          requests:
-            cpu: 10m
-            memory: 10Mi
         volumeMounts:
         - mountPath: /var/log/cassandra
           name: gc-logs

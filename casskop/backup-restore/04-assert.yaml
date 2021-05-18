@@ -1,0 +1,8 @@
+# Assert we have 2,000 records in table k2.standard1
+apiVersion: kuttl.dev/v1beta1
+kind: TestAssert
+commands:
+- script: |
+    output=$(kubectl exec -n $NAMESPACE cassandra-e2e-dc1-rack1-0 -- cqlsh -k k2 -e "SELECT count(*) FROM standard1;")
+    echo $output|grep -q 2000
+timeout: 20
