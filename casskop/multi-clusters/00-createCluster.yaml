@@ -77,11 +77,20 @@ spec:
       metadata:
         namespace: cluster1
       spec:
+        config:
+          jvm-options:
+            print_tenuring_distribution: "true"
         topology:
           dc:
             - name: dc1
+              config:
+                jvm-options:
+                  print_tenuring_distribution: "false"
               rack: &rack
                 - name: rack1
+                  config:
+                    jvm-options:
+                      print_tenuring_distribution: "true"
     k8s-cluster2:
       metadata:
         namespace: cluster2
