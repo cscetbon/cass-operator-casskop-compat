@@ -3,9 +3,9 @@ kind: TestStep
 commands:
   - script: |
       kubectl create namespace cluster1
-      helm install casskop -n cluster1 orange-incubator/cassandra-operator --set image.tag=cassie4
+      helm install casskop -n cluster1 orange-incubator/cassandra-operator --set image.tag=master
       kubectl create namespace cluster2
-      helm install casskop -n cluster2 orange-incubator/cassandra-operator --set image.tag=cassie4
+      helm install casskop -n cluster2 orange-incubator/cassandra-operator --set image.tag=master
       kubemcsa export cassandra-operator --as k8s-cluster2 -n cluster1|kubectl apply -n cluster1 -f -
       secret=$(kubectl get secrets -n cluster1 k8s-cluster2 -o json|jq -r '.data.config'|base64 -d|sed -e 's#\(server:\) .*#\1  https://kubernetes.default.svc #'|base64)
       kubectl get secrets -n cluster1 k8s-cluster2 -o json|jq ".data.config=\"$secret\""|kubectl apply -f -

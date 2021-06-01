@@ -5,11 +5,11 @@ testDirs:
 commands:
   - command: helm repo add orange-incubator https://orange-kubernetes-charts-incubator.storage.googleapis.com/
     ignoreFailure: true
-  - command: kubectl apply -f https://raw.githubusercontent.com/Orange-OpenSource/casskop/cassie4/deploy/crds/db.orange.com_cassandraclusters_crd.yaml
+  - command: kubectl apply -f https://raw.githubusercontent.com/Orange-OpenSource/casskop/master/deploy/crds/db.orange.com_cassandraclusters_crd.yaml
     ignoreFailure: true
-  - command: kubectl apply -f https://raw.githubusercontent.com/Orange-OpenSource/casskop/cassie4/deploy/crds/db.orange.com_cassandrabackups_crd.yaml
+  - command: kubectl apply -f https://raw.githubusercontent.com/Orange-OpenSource/casskop/master/deploy/crds/db.orange.com_cassandrabackups_crd.yaml
     ignoreFailure: true
-  - command: kubectl apply -f https://raw.githubusercontent.com/Orange-OpenSource/casskop/cassie4/deploy/crds/db.orange.com_cassandrarestores_crd.yaml
+  - command: kubectl apply -f https://raw.githubusercontent.com/Orange-OpenSource/casskop/master/deploy/crds/db.orange.com_cassandrarestores_crd.yaml
     ignoreFailure: true
 timeout: 600
 parallel: 1
